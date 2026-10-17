@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#0a0a0b"/>
+  <text x="80" y="360" fill="#34d399" font-family="ui-monospace,monospace" font-size="32">embed · retrieve · generate</text>
+  <text x="80" y="430" fill="#fafafa" font-family="system-ui,sans-serif" font-size="40" font-weight="600">RAG patterns for SaaS</text>
+</svg>

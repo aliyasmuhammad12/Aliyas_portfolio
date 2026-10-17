@@ -1,0 +1,48 @@
+---
+title: "RAG patterns that survive multi-tenant SaaS"
+description: "Org scoping, citation-first UX, and eval hooks—not another vector demo."
+date: 2025-10-01
+tags: ["RAG", "OpenAI", "SaaS", "Architecture"]
+coverImage: "/images/covers/blog-rag.svg"
+role: "Author"
+stack: ["Next.js", "PostgreSQL", "OpenAI API"]
+metrics: []
+featured: true
+---
+
+Shipping retrieval-augmented generation inside a SaaS product is less about embedding PDFs and more about **tenant boundaries**, **auditability**, and **cost envelopes**. This post summarizes patterns I use before writing integration code.
+
+{/* TODO: Add your own product screenshots and anonymized metrics. */}
+
+## Start from the support ticket you want to remove
+
+Pick one narrow intent—"reset API key," "invite teammate," "upgrade plan"—and write golden questions. If you cannot answer them from docs today, RAG will not fix missing content.
+
+## Scope retrieval in the database, not the prompt
+
+Pass `organizationId` from the session into every retrieval query. Never rely on the model to "remember" which customer is asking.
+
+```sql
+-- Illustrative: always filter in SQL
+SELECT chunk, embedding <=> $query_embedding AS distance
+FROM document_chunks
+WHERE organization_id = $org_id
+ORDER BY distance
+LIMIT 8;
+```
+
+## Cite or retract
+
+UI should show sources users can click. If retrieval confidence is below threshold, return a structured "I don't know" with link to human support.
+
+## Log for evals, not for vibes
+
+Store `{question, retrievedChunkIds, answer, feedback}` so you can regression-test prompt changes weekly.
+
+## What I would not do again
+
+- **Mega-prompting** entire knowledge bases.
+- **Client-side keys** for anything beyond a disposable demo.
+- **Skipping rate limits** because "we're still in beta."
+
+{/* TODO: Link to full case study once client approves public details. */}

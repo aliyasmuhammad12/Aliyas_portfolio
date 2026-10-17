@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#0a0a0b"/>
+  <rect x="80" y="420" width="1040" height="24" rx="4" fill="#1f1f23"/>
+  <rect x="80" y="420" width="420" height="24" rx="4" fill="#34d399" opacity="0.85"/>
+  <text x="80" y="340" fill="#fafafa" font-family="system-ui,sans-serif" font-size="48" font-weight="600">OpenAI cost control</text>
+  <text x="80" y="400" fill="#a1a1aa" font-family="system-ui,sans-serif" font-size="24">Case study cover · TODO replace</text>
+</svg>

@@ -3,10 +3,10 @@ import Link from "next/link";
 
 import { ScrollReveal } from "@/components/shared/scroll-reveal";
 import { Section, SectionHeader } from "@/components/shared/section";
-import type { CaseStudy } from "@/lib/case-studies";
+import type { ContentSummary } from "@/lib/content/types";
 
 type FeaturedCaseStudiesSectionProps = {
-  studies: CaseStudy[];
+  studies: ContentSummary[];
 };
 
 export function FeaturedCaseStudiesSection({ studies }: FeaturedCaseStudiesSectionProps) {
@@ -31,7 +31,7 @@ export function FeaturedCaseStudiesSection({ studies }: FeaturedCaseStudiesSecti
                 </Link>
               </h3>
               <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
-                {study.excerpt}
+                {study.description}
               </p>
               {study.tags && study.tags.length > 0 ? (
                 <ul className="mt-4 flex flex-wrap gap-2">
@@ -52,9 +52,9 @@ export function FeaturedCaseStudiesSection({ studies }: FeaturedCaseStudiesSecti
                 >
                   Read case study
                 </Link>
-                {study.externalUrl ? (
+                {study.clientUrl ? (
                   <Link
-                    href={study.externalUrl}
+                    href={study.clientUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground"

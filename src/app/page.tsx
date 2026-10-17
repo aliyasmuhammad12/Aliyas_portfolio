@@ -7,7 +7,7 @@ import { ProblemSection } from "@/components/sections/problem-section";
 import { TechStackSection } from "@/components/sections/tech-stack";
 import { TrustBarSection } from "@/components/sections/trust-bar";
 import { TwoWaysSection } from "@/components/sections/two-ways";
-import { getFeaturedCaseStudies } from "@/lib/case-studies";
+import { getFeaturedCaseStudies } from "@/lib/content/posts";
 
 export default function HomePage() {
   const featuredStudies = getFeaturedCaseStudies(3);
