@@ -1,0 +1,37 @@
+---
+alwaysApply: true
+---
+You are a senior Next.js engineer. Build the portfolio site for "Aliyas Muhammad – Full-Stack AI Developer".
+
+Stack: Next.js 15 App Router, TypeScript (strict), Tailwind CSS v4, shadcn/ui, Motion, pnpm, ESLint + Prettier.
+
+Project rules:
+- Server Components by default; "use client" only when necessary.
+- Mobile-first, accessible (semantic HTML, WCAG AA, keyboard nav, prefers-reduced-motion).
+- Performance budget: Lighthouse 95+ in all categories. next/image, next/font, lazy-load below-the-fold client code, no heavy libraries.
+- Theme: dark-first with light toggle via CSS variables. Background near-black (#0a0a0b), surfaces #111113, borders #1f1f23. Single accent: emerald, #34d399 in dark mode and #059669 in light mode. Text high-contrast. Large type, generous spacing, minimal, no decorative clutter.
+- Structure: src/app, src/components/{ui,sections,shared}, src/lib, src/content (MDX), src/config/site.ts.
+- All copy and data come from typed content files, never hardcoded in components.
+- Env vars validated with zod in src/lib/env.ts. No secrets on the client.
+- After every task run typecheck + lint + build and fix all errors.
+
+Create src/config/site.ts with exactly this data:
+- name: "Aliyas Muhammad"
+- title: "Full-Stack AI Developer"
+- tagline: "AI features that survive real users."
+- location: "Gilgit-Baltistan, Pakistan" (working with clients worldwide)
+- url: "https://aliyas.dev" // TODO: replace with real domain once purchased
+- email: "hello@example.com" // TODO: replace with real email
+- socials: GitHub https://github.com/aliyasmuhammad12, LinkedIn https://www.linkedin.com/in/aliyas-muhammad/, Upwork https://www.upwork.com/freelancers/~01f64ca796637a4b98
+- pricing: hourly "$15/hr"; fixed-price packages "AI Feature Sprint" and "Prototype-to-Production" with amounts as configurable placeholders (price: "TODO")
+- availability: { status: "Available for work", responseTime: "I reply within a few hours" }
+- stats: 50+ client-facing features shipped, Lighthouse 60 to 90+, 100% Job Success Score, Upwork Rising Talent, 3+ years experience
+- skills grouped: AI (OpenAI API, LangChain, RAG), Full-stack (Next.js, React, Remix, Node/Express, TypeScript, MERN), Data & Auth (PostgreSQL, MongoDB, RxDB, Prisma, NextAuth, Stripe), DevOps (Vercel, AWS, Docker, CI/CD), Mobile & Desktop (mobile apps, Electron)
+- projects:
+  - North Travena (https://northtravena.com): ride-hailing for the Karakoram Highway region, built in Gilgit. 100+ captains, 500+ riders. My role: full-stack developer, mostly backend.
+  - Hotela (https://hotelaapp.com): hotel management application. My role: full-stack developer.
+  - STC SSO portal revamp: Next.js, TypeScript. Client name subject to permission.
+  - Ask My Portfolio: my own RAG chatbot (built for this site).
+- nav: Home, Services, Case Studies, Blog, Resources, About, Contact
+
+Then scaffold: theme, fonts (Geist), layout shell (sticky navbar with mobile menu, footer with socials), theme toggle, and a placeholder home page. Add a /public/images/aliyas.jpg placeholder and a reusable <Avatar/> that falls back to initials if the image is missing. Do not build other features yet.
