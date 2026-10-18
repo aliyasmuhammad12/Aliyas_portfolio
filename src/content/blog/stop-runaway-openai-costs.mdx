@@ -1,0 +1,52 @@
+---
+title: "How to stop runaway OpenAI costs in production"
+description: "Instrument first, route models by task, cache safely, and set budgets users can understand—before finance turns off your AI feature."
+date: 2026-01-20
+tags: ["OpenAI", "Cost optimization", "Production", "LLM"]
+coverImage: "/images/covers/openai-costs.svg"
+role: "Author"
+stack: []
+metrics: []
+featured: true
+---
+
+AI features often ship without a **cost owner**. Usage climbs, invoices spike, and the first fix is “turn it off.” These are the controls I add before scaling traffic.
+
+{/* TODO: Add anonymized before/after spend chart when available. */}
+
+## You cannot optimize what you do not measure
+
+Log **model**, **input/output tokens**, **route/feature name**, and **estimated USD** per request. Finance and product should read the same dashboard.
+
+```typescript
+await recordUsage({
+  feature: "summarize-ticket",
+  model: completion.model,
+  promptTokens: completion.usage?.prompt_tokens,
+  completionTokens: completion.usage?.completion_tokens,
+});
+```
+
+## Route models by task, not by habit
+
+Defaulting everything to the largest chat model is the fastest way to burn budget. Classify the task, use a small model for routing and simple transforms, and reserve large models for high-stakes generation.
+
+## Cache with explicit freshness rules
+
+Hash normalized inputs plus **model version** and **prompt version**. TTL should match how stale an answer can be for that feature—support docs vs live inventory are different beasts.
+
+## Budgets and kill-switches
+
+- Soft caps per org or per user tier with graceful degradation.
+- **Daily kill-switch** for anonymous or demo endpoints.
+- Alerts before hard stops—not after the invoice closes.
+
+## What not to do
+
+- Client-side API keys (ever).
+- Uncapped streaming to anonymous users.
+- Logging full prompts with PII into third-party tools without retention policy.
+
+{/* TODO: add metric — example savings percentage only when verified on a real engagement. */}
+
+Related work: [Ask My Portfolio](/case-studies/ask-my-portfolio) case study for budget guards on a public RAG bot.

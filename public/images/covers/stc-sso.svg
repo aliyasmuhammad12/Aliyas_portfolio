@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#0a0a0b"/>
+  <rect x="80" y="240" width="1040" height="200" rx="12" stroke="#1f1f23" stroke-width="2" fill="#111113"/>
+  <text x="120" y="340" fill="#a1a1aa" font-family="ui-monospace,monospace" font-size="22">SSO portal · Next.js · TypeScript</text>
+</svg>

@@ -1,0 +1,56 @@
+---
+title: "From Lovable/v0 prototype to production: auth, DB, Stripe, CI/CD"
+description: "Keep the UI momentum from AI builders; replace generated glue with typed auth, real data, payments, and a pipeline you can ship on."
+date: 2025-12-05
+tags: ["Next.js", "Stripe", "NextAuth", "CI/CD", "Prototype"]
+coverImage: "/images/covers/prototype-production.svg"
+role: "Author"
+stack: ["Next.js", "TypeScript", "Stripe"]
+metrics: []
+featured: true
+---
+
+v0, Lovable, Bolt, and Cursor get you a **credible demo** fast. Production needs **identity**, **money**, **data integrity**, and **repeatable deploys**. This is the order I follow when hardening a prototype.
+
+{/* TODO: Add downloadable checklist PDF when branding is ready. */}
+
+## Week 0 — Safety and scope
+
+- Rotate any key that touched the repo or client bundle.
+- Delete unused routes and components from the export.
+- Write down the three user journeys that must work for launch—ignore the rest until v2.
+
+## Week 1 — Auth and tenancy
+
+Replace mock login with **NextAuth** (or your IdP). Protect server actions and route handlers. Map roles in the database, not in React state.
+
+## Week 2 — Database and validation
+
+One schema (Prisma/Drizzle/etc.) as source of truth. **Zod** at every API boundary. Ban duplicate types copied from the builder export.
+
+## Week 3 — Stripe for real
+
+Checkout or Payment Element plus **webhooks** with an idempotency table before you announce pricing. Test `invoice.paid`, failed payments, and plan changes.
+
+```typescript
+const existing = await db.stripeEvent.findUnique({ where: { id: event.id } });
+if (existing) return new Response("ok", { status: 200 });
+await handleStripeEvent(event);
+await db.stripeEvent.create({ data: { id: event.id, type: event.type } });
+```
+
+## Week 4 — CI/CD
+
+On every PR: `typecheck`, `lint`, `test`, `build`. Preview environments per branch. Smoke test signup → pay → access gated feature.
+
+## Launch gates
+
+Do not go live if:
+
+- Nobody can explain double webhook delivery.
+- Signed-in home still scores **TODO: add metric** on Lighthouse Performance (target agreed with stakeholder).
+- OpenAI or other LLM calls lack per-user/org budgets.
+
+{/* TODO: add metric — time-to-first-paid-signup on a recent client project when approved. */}
+
+See also the [Hotela](/case-studies/hotela) and [North Travena](/case-studies/north-travena) case studies for full-stack production work.

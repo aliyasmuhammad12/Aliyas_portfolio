@@ -16,7 +16,7 @@ export function FeaturedCaseStudiesSection({ studies }: FeaturedCaseStudiesSecti
         id="case-studies-heading"
         eyebrow="Case studies"
         title="Featured work"
-        description="Real products in production—ride-hailing in the mountains, hospitality ops, and the RAG demo on this site."
+        description="North Travena on the KKH, Hotela, and the RAG bot on this site—production work from Gilgit-Baltistan."
       />
       <ul className="grid gap-6 md:grid-cols-3">
         {studies.map((study, index) => (
