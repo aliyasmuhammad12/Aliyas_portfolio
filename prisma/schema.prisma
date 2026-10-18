@@ -1,0 +1,49 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
+}
+
+model DocumentChunk {
+  id          String                       @id @default(cuid())
+  source      String
+  content     String                       @db.Text
+  metadata    Json?
+  chunkIndex  Int
+  contentHash String                       @unique
+  embedding   Unsupported("vector(1536)")?
+  createdAt   DateTime                     @default(now())
+  updatedAt   DateTime                     @updatedAt
+
+  @@index([source])
+  @@map("document_chunks")
+}
+
+model ChatRequestLog {
+  id               String   @id @default(cuid())
+  createdAt        DateTime @default(now())
+  ipHash           String?
+  userMessage      String   @db.Text
+  latencyMs        Int
+  promptTokens     Int
+  completionTokens Int
+  estimatedCostUsd Decimal  @db.Decimal(12, 8)
+  cached           Boolean  @default(false)
+  status           String
+
+  @@index([createdAt])
+  @@map("chat_request_logs")
+}
+
+model ChatDailySpend {
+  dayKey   String   @id
+  spentUsd Decimal  @db.Decimal(12, 6)
+  updatedAt DateTime @updatedAt
+
+  @@map("chat_daily_spend")
+}

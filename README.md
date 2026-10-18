@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Aliyas Portfolio
 
-## Getting Started
+Next.js portfolio with MDX content and a production-style **Ask My Portfolio** RAG demo (`/demo` + floating widget on the home page).
 
-First, run the development server:
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Ask My Portfolio (RAG chat) setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Environment
 
-## Learn More
+Copy `.env.example` to `.env.local` and fill in:
 
-To learn more about Next.js, take a look at the following resources:
+- `DATABASE_URL` — PostgreSQL with the [pgvector](https://github.com/pgvector/pgvector) extension
+- `OPENAI_API_KEY`
+- `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Optional tuning: `CHAT_DAILY_BUDGET_USD`, `CHAT_RATE_LIMIT`, `CHAT_MAX_INPUT_CHARS`, etc.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 2. Database
 
-## Deploy on Vercel
+Apply migrations (creates `document_chunks`, `chat_request_logs`, `chat_daily_spend`):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+pnpm db:migrate
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Or during early development:
+
+```bash
+pnpm db:push
+```
+
+Ensure pgvector is enabled on the database (`CREATE EXTENSION IF NOT EXISTS vector;` — included in the migration).
+
+### 3. Ingest content
+
+Indexes MDX under `src/content/case-studies`, `src/content/blog`, and markdown under `src/content/knowledge/`:
+
+```bash
+pnpm ingest
+```
+
+Re-run after content changes.
+
+### 4. Try the demo
+
+- Full UI: [/demo](http://localhost:3000/demo)
+- Home: `#chat` section + floating **Ask AI** button
+
+### Architecture (summary)
+
+- **Retrieval:** OpenAI `text-embedding-3-small` + pgvector cosine search (top-k via raw SQL)
+- **Generation:** Vercel AI SDK `streamText` with `gpt-4o-mini`, grounded system prompt, citations
+- **Guardrails:** Upstash sliding-window rate limit, daily spend cap + kill-switch, moderation, input/output limits, sanitized context, Redis response cache, request logging to Postgres
+
+### Tests
+
+```bash
+pnpm test
+```
+
+Unit tests cover budget and rate-limit helper logic.
+
+## Scripts
+
+| Command        | Description                |
+| -------------- | -------------------------- |
+| `pnpm dev`     | Development server         |
+| `pnpm build`   | Production build           |
+| `pnpm ingest`  | Re-index MDX for RAG       |
+| `pnpm test`    | Vitest unit tests          |
+| `pnpm db:migrate` | Apply Prisma migrations |

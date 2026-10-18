@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { PortfolioChat } from "@/components/chat/portfolio-chat";
 import { ScrollReveal } from "@/components/shared/scroll-reveal";
 import { Section, SectionHeader } from "@/components/shared/section";
 import { Button } from "@/components/ui/button";
@@ -12,28 +13,18 @@ export function ChatDemoSection() {
           id="chat-heading"
           eyebrow="Live demo"
           title="Ask My Portfolio"
-          description="Chat with a RAG bot trained on this site—stack, projects, and how I work. Full widget ships in a later pass; this is the anchor for the hero CTA."
+          description="Chat with a RAG bot trained on this site—stack, projects, and how I work."
         />
-        <div
-          className="rounded-xl border border-dashed border-border bg-surface/50 p-8 md:p-12"
-          role="region"
-          aria-label="Portfolio chat demo placeholder"
-        >
-          <p className="text-center text-muted-foreground">
-            {/* TODO: Embed Ask My Portfolio chat UI (streaming, citations, rate limits). */}
-            Chat interface coming soon. Try the button below once the widget is wired.
-          </p>
-          <div className="mt-6 flex justify-center">
-            <Button variant="secondary" disabled aria-disabled="true">
-              Open chat (TODO)
+        <div className="mx-auto max-w-3xl">
+          <PortfolioChat className="min-h-[460px]" />
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-sm">
+            <Button asChild variant="secondary" size="sm">
+              <Link href="/demo">Full demo &amp; architecture</Link>
             </Button>
-          </div>
-          <p className="mt-4 text-center text-xs text-muted-foreground">
-            Prefer email?{" "}
-            <Link href="/contact" className="text-accent hover:underline">
+            <Link href="/contact" className="text-muted-foreground hover:text-accent">
               Start a project
             </Link>
-          </p>
+          </div>
         </div>
       </ScrollReveal>
     </Section>

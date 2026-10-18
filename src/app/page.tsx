@@ -1,3 +1,4 @@
+import { FloatingChatWidget } from "@/components/chat/floating-chat-widget";
 import { ChatDemoSection } from "@/components/sections/chat-demo";
 import { FaqSection } from "@/components/sections/faq-section";
 import { FeaturedCaseStudiesSection } from "@/components/sections/featured-case-studies";
@@ -23,6 +24,7 @@ export default function HomePage() {
       <ChatDemoSection />
       <FaqSection />
       <FinalCtaSection />
+      <FloatingChatWidget />
     </>
   );
 }
